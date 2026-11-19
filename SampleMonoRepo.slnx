@@ -1,6 +1,0 @@
-<Solution>
-  <Folder Name="/backend/">
-    <Project Path="backend/SampleMonoRepo.DotNetApi.Tests/SampleMonoRepo.DotNetApi.Tests.csproj" />
-    <Project Path="backend/SampleMonoRepo.DotNetApi/SampleMonoRepo.DotNetApi.csproj" />
-  </Folder>
-</Solution>
