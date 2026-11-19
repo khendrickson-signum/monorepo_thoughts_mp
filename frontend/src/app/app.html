@@ -1,0 +1,30 @@
+<div class="page">
+  <mat-toolbar class="toolbar">
+    <span>SampleMonoRepo</span>
+  </mat-toolbar>
+
+  <main class="content">
+    <mat-card class="hello-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Hello from the API</mat-card-title>
+        <mat-card-subtitle>GET /api/hello</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (loading()) {
+          <mat-progress-bar mode="indeterminate" />
+        } @else if (error()) {
+          <p class="error">{{ error() }}</p>
+        } @else {
+          <p class="message">{{ message() }}</p>
+        }
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button matButton="filled" type="button" (click)="loadHello()" [disabled]="loading()">
+          Refresh
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </main>
+</div>

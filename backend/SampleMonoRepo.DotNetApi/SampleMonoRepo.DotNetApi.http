@@ -1,0 +1,6 @@
+@SampleMonoRepo.DotNetApi_HostAddress = http://localhost:5082
+
+GET {{SampleMonoRepo.DotNetApi_HostAddress}}/api/hello
+Accept: text/plain
+
+###
