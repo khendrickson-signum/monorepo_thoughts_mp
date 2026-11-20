@@ -47,6 +47,7 @@ BACKEND_CONTAINER_PORT = 21000
 CLIENT_CONFIG_KEY = "ClientConfig"
 CLIENT_CODE_KEY = "ClientCode"
 FRONTEND_CLIENT_CODE_FILE = "client-config.json"
+DATABASES_ROOT = REPO_ROOT / "databases"
 
 
 @dataclass(frozen=True)
@@ -174,6 +175,23 @@ def write_frontend_client_code(deployment: ClientDeployment) -> None:
     destination.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def database_project_names() -> list[str]:
+    return sorted(path.parent.name for path in DATABASES_ROOT.glob("*/*.csproj"))
+
+
+def volume_slug(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+
+def database_build_volumes(prefix: str) -> list[str]:
+    volumes: list[str] = []
+    for project_name in database_project_names():
+        slug = volume_slug(project_name)
+        volumes.append(f"      - {prefix}_{slug}_bin:/databases/{project_name}/bin")
+        volumes.append(f"      - {prefix}_{slug}_obj:/databases/{project_name}/obj")
+    return volumes
+
+
 def render_api_service(deployment: ClientDeployment) -> list[str]:
     slug = deployment.slug
     appsettings = f"./.simulate-production/{deployment.client_code}/appsettings.json"
@@ -188,9 +206,11 @@ def render_api_service(deployment: ClientDeployment) -> list[str]:
         f"      ASPNETCORE_URLS: http://0.0.0.0:{BACKEND_CONTAINER_PORT}",
         "    volumes:",
         "      - ./backend:/src",
+        "      - ./databases:/databases",
         f"      - {appsettings}:/src/SampleMonoRepo.DotNetApi/appsettings.json:ro",
         f"      - {slug}_api_bin:/src/SampleMonoRepo.DotNetApi/bin",
         f"      - {slug}_api_obj:/src/SampleMonoRepo.DotNetApi/obj",
+        *database_build_volumes(slug),
         "    healthcheck:",
         f'      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/{BACKEND_CONTAINER_PORT}"]',
         "      interval: 5s",
@@ -255,6 +275,14 @@ def render_compose(deployments: list[ClientDeployment]) -> str:
                 f"  {slug}_frontend_angular_cache:",
             ]
         )
+        for project_name in database_project_names():
+            project_slug = volume_slug(project_name)
+            lines.extend(
+                [
+                    f"  {slug}_{project_slug}_bin:",
+                    f"  {slug}_{project_slug}_obj:",
+                ]
+            )
     lines.append("")
     return "\n".join(lines)
 

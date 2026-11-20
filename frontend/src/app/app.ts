@@ -5,7 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Title } from '@angular/platform-browser';
-import { PortalAppBase } from './portals/portal-app-base';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { PortalAppBase, routesForPortal } from './portals/portal-app-base';
 import { CLIENT_CODE_FILE, resolvePortal } from './portals/portal-resolver';
 
 interface ClientCodeFile {
@@ -14,12 +15,21 @@ interface ClientCodeFile {
 
 @Component({
   selector: 'app-root',
-  imports: [MatButtonModule, MatCardModule, MatProgressBarModule, MatToolbarModule],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
   private readonly title = inject(Title);
 
   protected readonly portal = signal<PortalAppBase | null>(null);
@@ -56,9 +66,11 @@ export class App implements OnInit {
           this.clientCode.set(resolved.clientCode);
           this.title.setTitle(resolved.portal.PageDisplayText);
           this.portalLoading.set(false);
+          this.showPortalRoutes(resolved.portal);
         } catch (caught) {
           this.portal.set(null);
           this.clientCode.set(null);
+          this.clearPortalRoutes();
           this.portalError.set(
             caught instanceof Error ? caught.message : 'Could not load the portal.',
           );
@@ -68,10 +80,31 @@ export class App implements OnInit {
       error: () => {
         this.portal.set(null);
         this.clientCode.set(null);
+        this.clearPortalRoutes();
         this.portalError.set('Could not read the client code.');
         this.portalLoading.set(false);
       },
     });
+  }
+
+  private showPortalRoutes(portal: PortalAppBase): void {
+    this.router.resetConfig(routesForPortal(portal));
+    if (portal.Routes.length === 0) {
+      return;
+    }
+
+    void this.router.navigateByUrl(this.landingPath(portal));
+  }
+
+  private clearPortalRoutes(): void {
+    this.router.resetConfig([]);
+  }
+
+  private landingPath(portal: PortalAppBase): string {
+    const current = this.router.url.split(/[?#]/)[0].replace(/^\//, '');
+    const match = portal.Routes.find((route) => route.Path === current);
+    const path = match?.Path ?? portal.Routes[0]?.Path ?? '';
+    return path ? `/${path}` : '/';
   }
 
   protected loadHello(): void {

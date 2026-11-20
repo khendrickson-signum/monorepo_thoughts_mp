@@ -4,7 +4,21 @@
     [style.background]="portal()?.MenuColor"
     [style.color]="menuTextColor()"
   >
-    <span>{{ portal()?.PageDisplayText ?? 'Portal' }}</span>
+    <span class="menu-title">{{ portal()?.PageDisplayText ?? 'Portal' }}</span>
+    @if (portal(); as active) {
+      <nav class="menu-links" aria-label="Portal pages">
+        @for (route of active.Routes; track route.Path) {
+          <a
+            class="menu-link"
+            [routerLink]="['/', route.Path]"
+            routerLinkActive="menu-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            {{ route.MenuText }}
+          </a>
+        }
+      </nav>
+    }
   </mat-toolbar>
 
   <main class="content">
@@ -18,6 +32,7 @@
           <p class="client-code">ClientCode {{ clientCode() }}</p>
           <h1 class="portal-title">{{ active.PageDisplayText }}</h1>
         </div>
+        <router-outlet />
       }
 
       <mat-card class="hello-card" appearance="outlined">

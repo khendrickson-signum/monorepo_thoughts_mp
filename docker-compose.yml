@@ -13,8 +13,19 @@ services:
       ASPNETCORE_URLS: http://0.0.0.0:21000
     volumes:
       - ./backend:/src
+      - ./databases:/databases
       - api_bin:/src/SampleMonoRepo.DotNetApi/bin
       - api_obj:/src/SampleMonoRepo.DotNetApi/obj
+      - boss_master_database_bin:/databases/BossMasterDatabase/bin
+      - boss_master_database_obj:/databases/BossMasterDatabase/obj
+      - bobcat_project_database_bin:/databases/BobcatProjectDatabase/bin
+      - bobcat_project_database_obj:/databases/BobcatProjectDatabase/obj
+      - edison_project_database_bin:/databases/EdisonProjectDatabase/bin
+      - edison_project_database_obj:/databases/EdisonProjectDatabase/obj
+      - ixom_project_database_bin:/databases/IxomProjectDatabase/bin
+      - ixom_project_database_obj:/databases/IxomProjectDatabase/obj
+      - project_database_shared_bin:/databases/ProjectDatabase.Shared/bin
+      - project_database_shared_obj:/databases/ProjectDatabase.Shared/obj
     healthcheck:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/21000"]
       interval: 5s
@@ -44,5 +55,15 @@ services:
 volumes:
   api_bin:
   api_obj:
+  boss_master_database_bin:
+  boss_master_database_obj:
+  bobcat_project_database_bin:
+  bobcat_project_database_obj:
+  edison_project_database_bin:
+  edison_project_database_obj:
+  ixom_project_database_bin:
+  ixom_project_database_obj:
+  project_database_shared_bin:
+  project_database_shared_obj:
   frontend_node_modules:
   frontend_angular_cache:
