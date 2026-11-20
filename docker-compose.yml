@@ -1,0 +1,48 @@
+name: sample-monorepo
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: sample-monorepo-api
+    ports:
+      - "21000:21000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:21000
+    volumes:
+      - ./backend:/src
+      - api_bin:/src/SampleMonoRepo.DotNetApi/bin
+      - api_obj:/src/SampleMonoRepo.DotNetApi/obj
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/21000"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 120s
+    init: true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: sample-monorepo-frontend
+    ports:
+      - "20000:20000"
+    environment:
+      API_PROXY_TARGET: http://api:21000
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+      - frontend_angular_cache:/app/.angular
+    depends_on:
+      api:
+        condition: service_healthy
+    init: true
+
+volumes:
+  api_bin:
+  api_obj:
+  frontend_node_modules:
+  frontend_angular_cache:
