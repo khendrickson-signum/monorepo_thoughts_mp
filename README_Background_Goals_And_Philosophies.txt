@@ -8,8 +8,14 @@ There should be sets of containers that simulated deployed sites. The idea is th
 single monorepo, you can see what it would look like when configured in "Ixom Mode", in "Bobcat Mode", 
 etc.
 
+-- 
+
+See ctrl+shift+f for "fce5710e-1606-4ccb-9e5c-406cde46d156" an example of how API controllers 
+specific to a given Client are gated to only work with a specific Client 
+
 ClientConfigs 
 - Envisioned the concept of a "ClientConfiguration" existing in both Angular and in .NET (i.e. frontend and backend)
+- a "Client" is someone like Bobcat, Ixom, etc... maybe "Customer" or a better word for this 
 - During deployment, this flag is set in a json config file that is read at runtime 
 -- e.g. "run_deployment.py --ClientConfigCode Edison 
 --- ^^^ invokes a Docker container deploy, and in the process sets "Edison" in a config file somewhere

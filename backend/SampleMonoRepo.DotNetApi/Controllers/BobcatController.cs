@@ -8,7 +8,7 @@ namespace SampleMonoRepo.DotNetApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[RequireClientCode(ClientCode.Bobcat)]
+[RequireClientCode(ClientCode.Bobcat)]  // fce5710e-1606-4ccb-9e5c-406cde46d156
 public class BobcatController : ControllerBase
 {
     private readonly BossMasterDbContext _masterDbContext;
