@@ -1,0 +1,92 @@
+name: sample-monorepo-databases
+
+services:
+  boss-master:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sample-monorepo-boss-master-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "Dev-SqlServer-Sa-1!"
+    ports:
+      - "30003:1433"
+    volumes:
+      - boss_master_data:/var/opt/mssql
+    mem_limit: 1g
+    shm_size: 512mb
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -x /opt/mssql-tools18/bin/sqlcmd ]; then SQLCMD=/opt/mssql-tools18/bin/sqlcmd; else SQLCMD=/opt/mssql-tools/bin/sqlcmd; fi; $$SQLCMD -S localhost -U sa -P $$MSSQL_SA_PASSWORD -C -b -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    init: true
+
+  edison-project:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sample-monorepo-edison-project-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "Dev-SqlServer-Sa-1!"
+    ports:
+      - "30013:1433"
+    volumes:
+      - edison_project_data:/var/opt/mssql
+    mem_limit: 1g
+    shm_size: 512mb
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -x /opt/mssql-tools18/bin/sqlcmd ]; then SQLCMD=/opt/mssql-tools18/bin/sqlcmd; else SQLCMD=/opt/mssql-tools/bin/sqlcmd; fi; $$SQLCMD -S localhost -U sa -P $$MSSQL_SA_PASSWORD -C -b -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    init: true
+
+  bobcat-project:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sample-monorepo-bobcat-project-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "Dev-SqlServer-Sa-1!"
+    ports:
+      - "30023:1433"
+    volumes:
+      - bobcat_project_data:/var/opt/mssql
+    mem_limit: 1g
+    shm_size: 512mb
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -x /opt/mssql-tools18/bin/sqlcmd ]; then SQLCMD=/opt/mssql-tools18/bin/sqlcmd; else SQLCMD=/opt/mssql-tools/bin/sqlcmd; fi; $$SQLCMD -S localhost -U sa -P $$MSSQL_SA_PASSWORD -C -b -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    init: true
+
+  ixom-project:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sample-monorepo-ixom-project-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "Dev-SqlServer-Sa-1!"
+    ports:
+      - "30033:1433"
+    volumes:
+      - ixom_project_data:/var/opt/mssql
+    mem_limit: 1g
+    shm_size: 512mb
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -x /opt/mssql-tools18/bin/sqlcmd ]; then SQLCMD=/opt/mssql-tools18/bin/sqlcmd; else SQLCMD=/opt/mssql-tools/bin/sqlcmd; fi; $$SQLCMD -S localhost -U sa -P $$MSSQL_SA_PASSWORD -C -b -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    init: true
+
+volumes:
+  boss_master_data:
+  edison_project_data:
+  bobcat_project_data:
+  ixom_project_data:

@@ -7,8 +7,12 @@ public sealed class BossMasterDbContextFactory : IDesignTimeDbContextFactory<Bos
 {
     public BossMasterDbContext CreateDbContext(string[] args)
     {
+        string? configuredConnection = Environment.GetEnvironmentVariable("EF_CONNECTION");
+        string connectionString = string.IsNullOrWhiteSpace(configuredConnection)
+            ? "Server=placeholder;Database=BossMaster;User Id=placeholder;Password=placeholder;"
+            : configuredConnection;
         DbContextOptions<BossMasterDbContext> options = new DbContextOptionsBuilder<BossMasterDbContext>()
-            .UseSqlServer("Server=placeholder;Database=BossMaster;User Id=placeholder;Password=placeholder;")
+            .UseSqlServer(connectionString)
             .Options;
 
         return new BossMasterDbContext(options);

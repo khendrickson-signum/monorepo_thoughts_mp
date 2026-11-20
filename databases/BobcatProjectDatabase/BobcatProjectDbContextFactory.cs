@@ -7,8 +7,12 @@ public sealed class BobcatProjectDbContextFactory : IDesignTimeDbContextFactory<
 {
     public BobcatProjectDbContext CreateDbContext(string[] args)
     {
+        string? configuredConnection = Environment.GetEnvironmentVariable("EF_CONNECTION");
+        string connectionString = string.IsNullOrWhiteSpace(configuredConnection)
+            ? "Server=placeholder;Database=BobcatProject;User Id=placeholder;Password=placeholder;"
+            : configuredConnection;
         DbContextOptions<BobcatProjectDbContext> options = new DbContextOptionsBuilder<BobcatProjectDbContext>()
-            .UseSqlServer("Server=placeholder;Database=BobcatProject;User Id=placeholder;Password=placeholder;")
+            .UseSqlServer(connectionString)
             .Options;
 
         return new BobcatProjectDbContext(options);

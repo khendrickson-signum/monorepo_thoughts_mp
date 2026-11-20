@@ -7,8 +7,12 @@ public sealed class IxomProjectDbContextFactory : IDesignTimeDbContextFactory<Ix
 {
     public IxomProjectDbContext CreateDbContext(string[] args)
     {
+        string? configuredConnection = Environment.GetEnvironmentVariable("EF_CONNECTION");
+        string connectionString = string.IsNullOrWhiteSpace(configuredConnection)
+            ? "Server=placeholder;Database=IxomProject;User Id=placeholder;Password=placeholder;"
+            : configuredConnection;
         DbContextOptions<IxomProjectDbContext> options = new DbContextOptionsBuilder<IxomProjectDbContext>()
-            .UseSqlServer("Server=placeholder;Database=IxomProject;User Id=placeholder;Password=placeholder;")
+            .UseSqlServer(connectionString)
             .Options;
 
         return new IxomProjectDbContext(options);
