@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
+import { HomeComponentBase } from '../home-component-base';
 
 @Component({
   selector: 'app-edison-home',
-  template: `
-    <section class="route-page">
-      <h2>Edison Home</h2>
-      <p>Home page for the Edison portal.</p>
-    </section>
-  `,
+  templateUrl: '../home-page.html',
   styleUrl: '../portal-page.scss',
 })
-export class EdisonHomeComponent {}
+export class EdisonHomeComponent extends HomeComponentBase {
+  readonly ClientName = 'Edison';
+}

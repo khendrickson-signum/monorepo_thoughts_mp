@@ -8,6 +8,13 @@ There should be sets of containers that simulated deployed sites. The idea is th
 single monorepo, you can see what it would look like when configured in "Ixom Mode", in "Bobcat Mode", 
 etc.
 
+After this launches, you should be able to access in your browser:
+https://localhost:30010 - a sample Ixom portal
+https://localhost:30020 - a sample Bobcat portal 
+https://localhost:30030 - a sample Edison portal 
+
+These would simulate, say, remote GCP instances.
+
 -- 
 
 See ctrl+shift+f for "fce5710e-1606-4ccb-9e5c-406cde46d156" an example of how API controllers 
