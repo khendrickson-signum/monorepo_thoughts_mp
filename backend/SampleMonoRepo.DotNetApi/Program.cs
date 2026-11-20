@@ -1,4 +1,10 @@
+using SampleMonoRepo.DotNetApi.ClientConfigurations;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<ClientConfigurationResolver>();
+builder.Services.AddSingleton<ClientConfiguration>(serviceProvider =>
+    serviceProvider.GetRequiredService<ClientConfigurationResolver>().Current);
 
 builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
@@ -12,6 +18,9 @@ builder.Services.AddCors(options =>
 });
 
 WebApplication app = builder.Build();
+
+ClientConfiguration clientConfiguration = app.Services.GetRequiredService<ClientConfiguration>();
+app.Logger.LogInformation("Loaded client configuration {ClientCode}.", clientConfiguration.ClientCode);
 
 if (app.Environment.IsDevelopment())
 {

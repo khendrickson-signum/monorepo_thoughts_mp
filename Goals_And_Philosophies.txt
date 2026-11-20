@@ -1,0 +1,8 @@
+Braindump of misc thoughts from kyle throughout set up of this is. 
+
+ClientConfigs 
+- Envisioned the concept of a "ClientConfiguration" existing in both Angular and in .NET (i.e. frontend and backend)
+- During deployment, this flag is set in a json config file that is read at runtime 
+-- e.g. "run_deployment.py --ClientConfigCode Edison 
+--- ^^^ invokes a Docker container deploy, and in the process sets "Edison" in a config file somewhere
+--- at run time, we load that, and look up a "ClientConfiguration" using a switch statement  
