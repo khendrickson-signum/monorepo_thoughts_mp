@@ -5,7 +5,7 @@ import { EdisonCircuitsComponent } from './edison/edison-circuits';
 import { EdisonHomeComponent } from './edison/edison-home';
 import { EdisonPortal } from './edison-portal';
 import { IxomHomeComponent } from './ixom/ixom-home';
-import { IxomPlantsComponent } from './ixom/ixom-plants';
+import { IxomWaterCareComponent } from './ixom/ixom-water-care';
 import { IxomPortal } from './ixom-portal';
 import { PortalAppBase, routesForPortal } from './portal-app-base';
 import { resolvePortal } from './portal-resolver';
@@ -49,7 +49,7 @@ describe('resolvePortal', () => {
       menuColor: '#007A8A',
       routes: [
         { path: 'home', menuText: 'Home', component: IxomHomeComponent },
-        { path: 'plants', menuText: 'Plants', component: IxomPlantsComponent },
+        { path: 'water-care', menuText: 'Water Care', component: IxomWaterCareComponent },
       ],
     },
   ];

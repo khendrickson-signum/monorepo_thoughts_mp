@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-ixom-plants',
+  selector: 'app-ixom-water-care',
   template: `
     <section class="route-page">
-      <h2>Ixom Plants</h2>
-      <p>Plants page for the Ixom portal.</p>
+      <h2>Ixom Water Care</h2>
+      <p>Water Care page for the Ixom portal.</p>
     </section>
   `,
   styleUrl: '../portal-page.scss',
 })
-export class IxomPlantsComponent {}
+export class IxomWaterCareComponent {}

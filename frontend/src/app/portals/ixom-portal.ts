@@ -1,5 +1,5 @@
 import { IxomHomeComponent } from './ixom/ixom-home';
-import { IxomPlantsComponent } from './ixom/ixom-plants';
+import { IxomWaterCareComponent } from './ixom/ixom-water-care';
 import { PortalAppBase, PortalRoute } from './portal-app-base';
 
 export class IxomPortal extends PortalAppBase {
@@ -7,6 +7,6 @@ export class IxomPortal extends PortalAppBase {
   readonly PageDisplayText = 'IxomPortal';
   readonly Routes: readonly PortalRoute[] = [
     { Path: 'home', MenuText: 'Home', Component: IxomHomeComponent },
-    { Path: 'plants', MenuText: 'Plants', Component: IxomPlantsComponent },
+    { Path: 'water-care', MenuText: 'Water Care', Component: IxomWaterCareComponent },
   ];
 }

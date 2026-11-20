@@ -72,6 +72,30 @@ describe('App', () => {
     http.verify();
   });
 
+  it('should open the Ixom Water Care page from its menu link', async () => {
+    const fixture = TestBed.createComponent(App);
+    const http = TestBed.inject(HttpTestingController);
+
+    fixture.detectChanges();
+
+    flushClientCode(http, 'Ixom');
+    http.expectOne('/api/hello').flush('Hello World');
+
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(menuLinkText(compiled)).toEqual(['Home', 'Water Care']);
+
+    const waterCare = menuLink(compiled, 'Water Care');
+    waterCare.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.route-page')?.textContent).toContain('Ixom Water Care');
+    expect(waterCare.classList.contains('menu-link-active')).toBe(true);
+    http.verify();
+  });
+
   it('should show an error when ClientCode is unknown', async () => {
     const fixture = TestBed.createComponent(App);
     const http = TestBed.inject(HttpTestingController);

@@ -17,8 +17,11 @@ These would simulate, say, remote GCP instances.
 
 -- 
 
-See ctrl+shift+f for "fce5710e-1606-4ccb-9e5c-406cde46d156" an example of how API controllers 
-specific to a given Client are gated to only work with a specific Client 
+Each portal has its own respective "App" component in Angular. Consider this somewhat like the "Main" 
+routine for each Client. For example, ctrl+shift+f for "181a0362-a14d-477d-ab15-425e2a64a525" to see 
+where the general shape and configuration of Bobcat is set.
+
+--
 
 ClientConfigs 
 - Envisioned the concept of a "ClientConfiguration" existing in both Angular and in .NET (i.e. frontend and backend)
@@ -28,6 +31,12 @@ ClientConfigs
 --- ^^^ invokes a Docker container deploy, and in the process sets "Edison" in a config file somewhere
 --- at run time, we load that, and look up a "ClientConfiguration" using a switch statement  
 - ctrl+shift+f for "c7e1e6ea-8da0-4dc8-932b-c1b8c0b460b6" to find a sample config (Bobcat)
+
+--
+
+See ctrl+shift+f for "fce5710e-1606-4ccb-9e5c-406cde46d156" an example of how API controllers 
+specific to a given Client are gated to only work with a specific Client, i.e. "this controller 
+only works if the client is set to Bobcat" 
 
 ---
 
