@@ -4,12 +4,14 @@ public abstract class ClientConfiguration
 {
     protected ClientConfiguration(
         ClientCode clientCode,
+        Guid projectId,
         string siteTitle,
         string menuBackground,
         string projectDbConnectionString,
         string masterDbConnectionString)
     {
         ClientCode = clientCode;
+        ProjectId = projectId;
         SiteTitle = siteTitle;
         MenuBackground = menuBackground;
         ProjectDbConnectionString = projectDbConnectionString;
@@ -17,6 +19,8 @@ public abstract class ClientConfiguration
     }
 
     public ClientCode ClientCode { get; }
+
+    public Guid ProjectId { get; }
 
     public string SiteTitle { get; }
 
