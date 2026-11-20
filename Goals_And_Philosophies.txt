@@ -1,5 +1,13 @@
 Brain Dump of misc thoughts from kyle throughout set up of this is. 
 
+--
+
+There is a "run_everything.py" script at the root of the repo. This should 
+spin up a bunch of Docker containers, including databases, .net backends, and Angular frontends. 
+There should be sets of containers that simulated deployed sites. The idea is that from the 
+single monorepo, you can see what it would look like when configured in "Ixom Mode", in "Bobcat Mode", 
+etc.
+
 ClientConfigs 
 - Envisioned the concept of a "ClientConfiguration" existing in both Angular and in .NET (i.e. frontend and backend)
 - During deployment, this flag is set in a json config file that is read at runtime 
