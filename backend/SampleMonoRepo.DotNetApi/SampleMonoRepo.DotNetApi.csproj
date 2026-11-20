@@ -8,6 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\databases\BossMasterDatabase\BossMasterDatabase.csproj" />
+    <ProjectReference Include="..\..\databases\BobcatProjectDatabase\BobcatProjectDatabase.csproj" />
+    <ProjectReference Include="..\..\databases\EdisonProjectDatabase\EdisonProjectDatabase.csproj" />
+    <ProjectReference Include="..\..\databases\IxomProjectDatabase\IxomProjectDatabase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
