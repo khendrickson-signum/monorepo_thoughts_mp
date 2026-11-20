@@ -3,4 +3,5 @@
   <Project Path="BossMasterDatabase/BossMasterDatabase.csproj" />
   <Project Path="EdisonProjectDatabase/EdisonProjectDatabase.csproj" />
   <Project Path="IxomProjectDatabase/IxomProjectDatabase.csproj" />
+  <Project Path="ProjectDatabase.Shared/ProjectDatabase.Shared.csproj" />
 </Solution>

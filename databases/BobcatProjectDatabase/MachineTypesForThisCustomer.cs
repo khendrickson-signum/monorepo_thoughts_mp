@@ -1,8 +1,7 @@
+using ProjectDatabase.Shared;
+
 namespace BobcatProjectDatabase;
 
-public class MachineTypesForThisCustomer
+public class MachineTypesForThisCustomer : MachineTypesForThisCustomerBase
 {
-    public Guid Id { get; set; }
-
-    public string Name { get; set; } = null!;
 }

@@ -1,12 +1,7 @@
+using ProjectDatabase.Shared;
+
 namespace IxomProjectDatabase;
 
-public class DevicesForThisCustomer
+public class DevicesForThisCustomer : DevicesForThisCustomerBase
 {
-    public Guid Id { get; set; }
-
-    public Guid SignumGuid { get; set; }
-
-    public bool? IsActive { get; set; } = false;
-
-    public string? Name { get; set; }
 }
