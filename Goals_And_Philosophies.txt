@@ -6,3 +6,5 @@ ClientConfigs
 -- e.g. "run_deployment.py --ClientConfigCode Edison 
 --- ^^^ invokes a Docker container deploy, and in the process sets "Edison" in a config file somewhere
 --- at run time, we load that, and look up a "ClientConfiguration" using a switch statement  
+- ctrl+shift+f for "c7e1e6ea-8da0-4dc8-932b-c1b8c0b460b6" to find a sample config (Bobcat)
+

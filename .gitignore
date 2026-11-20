@@ -17,6 +17,7 @@ __pycache__/
 
 # Generated when run_everything.py opens the service list
 running-services.html
+client-preview.html
 
 # OS
 .DS_Store

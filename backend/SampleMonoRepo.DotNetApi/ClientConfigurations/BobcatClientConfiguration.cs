@@ -1,5 +1,6 @@
 namespace SampleMonoRepo.DotNetApi.ClientConfigurations;
 
+// REF: c7e1e6ea-8da0-4dc8-932b-c1b8c0b460b6
 public sealed class BobcatClientConfiguration : ClientConfiguration
 {
     public BobcatClientConfiguration()

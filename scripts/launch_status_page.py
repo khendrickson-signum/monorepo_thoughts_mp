@@ -27,6 +27,9 @@ CLIENT_CONFIGURATION_DIR = (
 CLIENT_CODE_FILE = CLIENT_CONFIGURATION_DIR / "ClientCode.cs"
 APPSETTINGS_FILE = REPO_ROOT / "backend" / "SampleMonoRepo.DotNetApi" / "appsettings.json"
 STATUS_PAGE = REPO_ROOT / "running-services.html"
+PREVIEW_PAGE = REPO_ROOT / "client-preview.html"
+PORT_BASE = 30000
+PORT_BLOCK = 10
 CONNECTION_STRING_PATTERN = re.compile(r'"Server=[^"]*"')
 OTHER_GROUP = "Other"
 
@@ -379,6 +382,76 @@ def render_page(
 """
 
 
+def render_preview(clients: list[ClientServices]) -> str:
+    panes: list[str] = []
+    for index, client in enumerate(clients, start=1):
+        port = PORT_BASE + index * PORT_BLOCK
+        url = f"http://localhost:{port}/"
+        panes.append(
+            f"""
+            <section class="pane" style="border-color: {html.escape(client.color)}">
+              <iframe src="{html.escape(url)}" title="{html.escape(client.name)}"></iframe>
+              <a class="label" href="{html.escape(url)}">{html.escape(client.name)}</a>
+            </section>
+            """
+        )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Client preview</title>
+  <style>
+    html, body {{
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #1c2830;
+    }}
+    .row {{
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }}
+    .pane {{
+      flex: 1 1 0;
+      height: 100%;
+      min-width: 0;
+      position: relative;
+      border-left: 4px solid #335c81;
+    }}
+    .pane:first-child {{
+      border-left: 0;
+    }}
+    iframe {{
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: white;
+    }}
+    .label {{
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(28, 40, 48, 0.88);
+      color: white;
+      font-family: "Segoe UI", sans-serif;
+      font-size: 13px;
+      text-decoration: none;
+    }}
+  </style>
+</head>
+<body>
+  <div class="row">
+    {"".join(panes)}
+  </div>
+</body>
+</html>
+"""
+
+
 def open_in_browser(path: Path) -> None:
     print(f"Status page: {path}", flush=True)
     if shutil.which("wslpath") and shutil.which("explorer.exe"):
@@ -416,7 +489,9 @@ def main() -> None:
     containers = load_running_containers()
     active = active_client_name(clients)
     STATUS_PAGE.write_text(render_page(clients, containers, active), encoding="utf-8")
+    PREVIEW_PAGE.write_text(render_preview(clients), encoding="utf-8")
     open_in_browser(STATUS_PAGE)
+    open_in_browser(PREVIEW_PAGE)
 
 
 if __name__ == "__main__":

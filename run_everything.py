@@ -3,9 +3,9 @@
 
 `dotnet test` builds the API and the test project. `ng test` compiles the
 Angular app for the test runner. Neither runs the production `ng build`, so
-this script builds first, then tests, then starts the database containers and
-the servers. When the servers are up, it opens an HTML page of the running
-containers grouped by client.
+this script builds first, then tests, then starts the database containers,
+one API and one Angular app for each client, and the shared dev servers.
+When those containers are up, it opens an HTML page grouped by client.
 """
 
 import subprocess
@@ -18,6 +18,7 @@ SCRIPTS = (
     REPO_ROOT / "scripts" / "build_all_projects.py",
     REPO_ROOT / "scripts" / "run_unit_tests.py",
     REPO_ROOT / "scripts" / "launch_databases.py",
+    REPO_ROOT / "scripts" / "simulate_production_deploy.py",
     REPO_ROOT / "scripts" / "start_backend_and_front.py",
 )
 

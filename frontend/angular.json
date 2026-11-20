@@ -63,7 +63,10 @@
           "options": {
             "port": 20000,
             "proxyConfig": "proxy.conf.js",
-            "allowedHosts": ["localhost", "127.0.0.1"]
+            "allowedHosts": ["localhost", "127.0.0.1"],
+            "headers": {
+              "Content-Security-Policy": "frame-ancestors *"
+            }
           },
           "configurations": {
             "production": {
