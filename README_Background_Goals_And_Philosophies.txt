@@ -48,3 +48,11 @@ When each respectively client is built and declared, we should be able to set up
 out all files that aren't used in that particular deployment. (e.g. if we're deploying Ixom,
 stuff that only Bobcat or only Edison used can theoretically be eliminated via tree shaking). Not exactly 
 sure this mechanism would fit in but I'm sure it's possible.  
+
+--
+
+General idea is, during demployment, the customer "code" gets set in two spots:
+client-config.json (angular)
+appsettings.json (dotnet)
+
+And that's how the frontend and backend "know" what client they're supposed to run as 
