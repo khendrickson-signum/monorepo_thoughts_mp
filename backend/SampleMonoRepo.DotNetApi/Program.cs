@@ -58,9 +58,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("Frontend");
 
-app.MapGet("/api/hello", () => Results.Text("Hello World"))
-    .WithName("GetHello");
-
 app.MapControllers();
 
 app.Run();

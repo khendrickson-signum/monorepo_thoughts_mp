@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <section class="route-page">
       <h2>Bobcat Machines</h2>
-      <p>Machines page for the Bobcat portal.</p>
+      <p>this component is unique to this client</p>
     </section>
   `,
   styleUrl: '../portal-page.scss',

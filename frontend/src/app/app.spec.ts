@@ -21,26 +21,32 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show the message returned by the API', async () => {
+  it('should show the portal selected by ClientCode', async () => {
     const fixture = TestBed.createComponent(App);
     const http = TestBed.inject(HttpTestingController);
 
     fixture.detectChanges();
 
     flushClientCode(http, 'Edison');
-    const request = http.expectOne('/api/hello');
-    expect(request.request.method).toBe('GET');
-    request.flush('Hello World');
 
     await fixture.whenStable();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.message')?.textContent).toContain('Hello World');
     expect(compiled.querySelector('.portal-title')?.textContent).toContain('EdisonPortal');
     expect(compiled.querySelector('.client-code')?.textContent).toContain('ClientCode Edison');
     expect(menuLinkText(compiled)).toEqual(['Home', 'Circuits']);
     expect(compiled.querySelector('.route-page')?.textContent).toContain('Edison Home');
     expect(menuBackground(compiled)).toBe('rgb(201, 162, 39)');
+
+    const circuits = menuLink(compiled, 'Circuits');
+    circuits.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.route-page')?.textContent).toContain(
+      'this component is unique to this client',
+    );
+    expect(circuits.classList.contains('menu-link-active')).toBe(true);
     http.verify();
   });
 
@@ -51,7 +57,6 @@ describe('App', () => {
     fixture.detectChanges();
 
     flushClientCode(http, 'Bobcat');
-    http.expectOne('/api/hello').flush('Hello World');
 
     await fixture.whenStable();
 
@@ -67,7 +72,9 @@ describe('App', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(compiled.querySelector('.route-page')?.textContent).toContain('Bobcat Machines');
+    expect(compiled.querySelector('.route-page')?.textContent).toContain(
+      'this component is unique to this client',
+    );
     expect(machines.classList.contains('menu-link-active')).toBe(true);
     http.verify();
   });
@@ -79,7 +86,6 @@ describe('App', () => {
     fixture.detectChanges();
 
     flushClientCode(http, 'Ixom');
-    http.expectOne('/api/hello').flush('Hello World');
 
     await fixture.whenStable();
 
@@ -91,7 +97,9 @@ describe('App', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(compiled.querySelector('.route-page')?.textContent).toContain('Ixom Water Care');
+    expect(compiled.querySelector('.route-page')?.textContent).toContain(
+      'this component is unique to this client',
+    );
     expect(waterCare.classList.contains('menu-link-active')).toBe(true);
     http.verify();
   });
@@ -103,7 +111,6 @@ describe('App', () => {
     fixture.detectChanges();
 
     flushClientCode(http, 'NotAClient');
-    http.expectOne('/api/hello').flush('Hello World');
 
     await fixture.whenStable();
 

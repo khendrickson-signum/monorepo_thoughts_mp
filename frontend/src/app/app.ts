@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Title } from '@angular/platform-browser';
@@ -16,8 +14,6 @@ interface ClientCodeFile {
 @Component({
   selector: 'app-root',
   imports: [
-    MatButtonModule,
-    MatCardModule,
     MatProgressBarModule,
     MatToolbarModule,
     RouterLink,
@@ -36,13 +32,9 @@ export class App implements OnInit {
   protected readonly clientCode = signal<string | null>(null);
   protected readonly portalLoading = signal(true);
   protected readonly portalError = signal<string | null>(null);
-  protected readonly message = signal('');
-  protected readonly loading = signal(true);
-  protected readonly error = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loadPortal();
-    this.loadHello();
   }
 
   protected menuTextColor(): string | null {
@@ -105,23 +97,6 @@ export class App implements OnInit {
     const match = portal.Routes.find((route) => route.Path === current);
     const path = match?.Path ?? portal.Routes[0]?.Path ?? '';
     return path ? `/${path}` : '/';
-  }
-
-  protected loadHello(): void {
-    this.loading.set(true);
-    this.error.set(null);
-
-    this.http.get('/api/hello', { responseType: 'text' }).subscribe({
-      next: (body: string) => {
-        this.message.set(body);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.message.set('');
-        this.error.set('Could not reach the API.');
-        this.loading.set(false);
-      },
-    });
   }
 }
 
