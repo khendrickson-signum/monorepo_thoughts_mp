@@ -12,6 +12,9 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Generated per-client production simulation
+.simulate-production/
+
 # OS
 .DS_Store
 Thumbs.db
