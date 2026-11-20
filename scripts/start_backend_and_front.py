@@ -3,7 +3,8 @@
 
 Published ports match the previous local servers: API 21000, frontend 20000.
 Containers left from a previous run, including anything else publishing those
-ports, are removed first. Ctrl+C stops both.
+ports, are removed first. Once the containers are up, a status page opens in
+the browser. Ctrl+C stops both servers.
 """
 
 import shutil
@@ -14,6 +15,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 COMPOSE_FILE = REPO_ROOT / "docker-compose.yml"
+STATUS_PAGE_SCRIPT = REPO_ROOT / "scripts" / "launch_status_page.py"
 API_PORT = 21000
 FRONTEND_PORT = 20000
 
@@ -98,15 +100,22 @@ def main() -> None:
 
     print(f"API: http://localhost:{API_PORT}", flush=True)
     print(f"Frontend: http://localhost:{FRONTEND_PORT}", flush=True)
-    print("Press Ctrl+C to stop both.", flush=True)
 
+    if run([*compose_command(), "up", "-d", "--build", "--wait", "--wait-timeout", "300"]) != 0:
+        raise SystemExit(1)
+
+    status_page = subprocess.run([sys.executable, str(STATUS_PAGE_SCRIPT)], cwd=REPO_ROOT)
+    if status_page.returncode != 0:
+        print("The servers are up, but the status page could not be opened.", file=sys.stderr)
+
+    print("Press Ctrl+C to stop both.", flush=True)
     exit_code = 0
     try:
         exit_code = run(
             [
                 *compose_command(),
                 "up",
-                "--build",
+                "--no-build",
                 "--abort-on-container-exit",
                 "--remove-orphans",
             ]

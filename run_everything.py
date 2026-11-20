@@ -4,7 +4,8 @@
 `dotnet test` builds the API and the test project. `ng test` compiles the
 Angular app for the test runner. Neither runs the production `ng build`, so
 this script builds first, then tests, then starts the database containers and
-the servers.
+the servers. When the servers are up, it opens an HTML page of the running
+containers grouped by client.
 """
 
 import subprocess

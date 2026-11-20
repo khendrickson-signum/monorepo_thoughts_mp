@@ -15,6 +15,9 @@ __pycache__/
 # Generated per-client production simulation
 .simulate-production/
 
+# Generated when run_everything.py opens the service list
+running-services.html
+
 # OS
 .DS_Store
 Thumbs.db
