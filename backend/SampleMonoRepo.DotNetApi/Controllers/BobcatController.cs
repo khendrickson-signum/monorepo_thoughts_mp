@@ -1,11 +1,14 @@
 using BobcatProjectDatabase;
 using BossMasterDatabase;
 using Microsoft.AspNetCore.Mvc;
+using SampleMonoRepo.DotNetApi.ClientConfigurations;
+using SampleMonoRepo.DotNetApi.Filters;
 
 namespace SampleMonoRepo.DotNetApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[RequireClientCode(ClientCode.Bobcat)]
 public class BobcatController : ControllerBase
 {
     private readonly BossMasterDbContext _masterDbContext;

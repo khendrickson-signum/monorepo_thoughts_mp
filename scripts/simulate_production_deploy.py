@@ -7,7 +7,8 @@ at 30000. The first client uses 30010 and 30011, the second uses 30020 and
 and the backend on 21000.
 
 Each backend gets its own appsettings.json with ClientConfig set to that
-client. The repo copy of appsettings.json is left unchanged.
+client. Each frontend gets its own client-config.json with ClientCode set
+to that client. The repo copies of those files are left unchanged.
 
 The stack stays up in the background. Run this script with "down" to stop it.
 """
@@ -44,6 +45,8 @@ PORT_BLOCK = 10
 FRONTEND_CONTAINER_PORT = 20000
 BACKEND_CONTAINER_PORT = 21000
 CLIENT_CONFIG_KEY = "ClientConfig"
+CLIENT_CODE_KEY = "ClientCode"
+FRONTEND_CLIENT_CODE_FILE = "client-config.json"
 
 
 @dataclass(frozen=True)
@@ -164,6 +167,13 @@ def write_appsettings(deployment: ClientDeployment) -> None:
     destination.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8")
 
 
+def write_frontend_client_code(deployment: ClientDeployment) -> None:
+    payload = {CLIENT_CODE_KEY: deployment.client_code}
+    destination = DEPLOY_DIR / deployment.client_code / FRONTEND_CLIENT_CODE_FILE
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
 def render_api_service(deployment: ClientDeployment) -> list[str]:
     slug = deployment.slug
     appsettings = f"./.simulate-production/{deployment.client_code}/appsettings.json"
@@ -193,6 +203,9 @@ def render_api_service(deployment: ClientDeployment) -> list[str]:
 
 def render_frontend_service(deployment: ClientDeployment) -> list[str]:
     slug = deployment.slug
+    client_code_file = (
+        f"./.simulate-production/{deployment.client_code}/{FRONTEND_CLIENT_CODE_FILE}"
+    )
     return [
         f"  {slug}-frontend:",
         f"    image: {FRONTEND_IMAGE}",
@@ -203,6 +216,7 @@ def render_frontend_service(deployment: ClientDeployment) -> list[str]:
         f"      API_PROXY_TARGET: http://{slug}-api:{BACKEND_CONTAINER_PORT}",
         "    volumes:",
         "      - ./frontend:/app",
+        f"      - {client_code_file}:/app/public/{FRONTEND_CLIENT_CODE_FILE}:ro",
         f"      - {slug}_frontend_node_modules:/app/node_modules",
         f"      - {slug}_frontend_angular_cache:/app/.angular",
         "    depends_on:",
@@ -249,6 +263,7 @@ def write_deployment_files(deployments: list[ClientDeployment]) -> None:
     DEPLOY_DIR.mkdir(parents=True, exist_ok=True)
     for deployment in deployments:
         write_appsettings(deployment)
+        write_frontend_client_code(deployment)
     COMPOSE_FILE.write_text(render_compose(deployments), encoding="utf-8")
 
 
@@ -261,7 +276,8 @@ def print_plan(deployments: list[ClientDeployment]) -> None:
         print(f"{deployment.client_code}", flush=True)
         print(f"  Frontend: http://localhost:{deployment.frontend_port}", flush=True)
         print(f"  Backend:  http://localhost:{deployment.backend_port}", flush=True)
-        print(f"  {CLIENT_CONFIG_KEY}: {deployment.client_code}", flush=True)
+        print(f"  Backend {CLIENT_CONFIG_KEY}: {deployment.client_code}", flush=True)
+        print(f"  Frontend {CLIENT_CODE_KEY}: {deployment.client_code}", flush=True)
 
 
 def published_ports(deployments: list[ClientDeployment]) -> tuple[int, ...]:
