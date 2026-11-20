@@ -14,4 +14,11 @@ public class IxomProjectDbContext : DbContext
     public DbSet<MachineConfigsThisCustomerSupports> MachineConfigsThisCustomerSupports => Set<MachineConfigsThisCustomerSupports>();
 
     public DbSet<MachineTypesForThisCustomer> MachineTypesForThisCustomer => Set<MachineTypesForThisCustomer>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DevicesForThisCustomer>().HasData(IxomProjectSeed.Devices);
+        modelBuilder.Entity<MachineTypesForThisCustomer>().HasData(IxomProjectSeed.MachineTypes);
+        modelBuilder.Entity<MachineConfigsThisCustomerSupports>().HasData(IxomProjectSeed.MachineConfigs);
+    }
 }

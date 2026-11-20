@@ -10,4 +10,9 @@ public class BossMasterDbContext : DbContext
     }
 
     public DbSet<AllSignumDevicesAcrossAllCustomers> AllSignumDevicesAcrossAllCustomers => Set<AllSignumDevicesAcrossAllCustomers>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AllSignumDevicesAcrossAllCustomers>().HasData(BossMasterSeed.Devices);
+    }
 }
